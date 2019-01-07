@@ -46,5 +46,31 @@ def ask_time_spent():
             elif (int(time_split[0]) == 24) and (int(time_split[1]) > 0):
                 input("Time spent cannot be more than 24 hours please press enter to continue...")
                 continue
+            elif (int(time_split[0]) == 23) and (int(time_split[1]) > 60):
+                input("Time spent cannot be more than 24 hours. Please press enter to continue...")
+            else:
+                time_spent = (int(time_split[0]) * 60) + (int(time_split[1]))
+                return time_spent
+
+
+def enter_date():
+    Menu_Logger.clear()
+    while True:
+        task_date = input("When was this work task performed? Date format: dd-mm-yyyy \n >>>  ").strip()
+        if task_date.lower() == "back":
+            Menu_Logger.menu()
+            break
+        try:
+            task_date = datetime.datetime.strptime(task_date, "%d-%m-%Y")
+            if task_date.date() > datetime.datetime.today().date():
+                input("Sorry your date cannot be later than todays date. Press enter and provide a valid date ")
+                continue
+        except ValueError:
+            input("Sorry not a valid date. Please try again. Press enter and enter a valid date")
+            continue
+        except Exception:
+            input("Something horrible went wrong. Please try again and press enter")
+        else:
+            return task_date.strftime("%d-%m-%Y")
             
 

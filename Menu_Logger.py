@@ -7,7 +7,8 @@ from time import gmtime, strftime, sleep
 
 
 def menu():
-    pass
+    clear()
+    display_menu()
 
 def start():
     clear()

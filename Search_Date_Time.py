@@ -47,10 +47,54 @@ class Date:
                 break
     
     def get_dates(entries):
-        pass
+        search_date = []
+        for e in entries:
+            if e['Date'] not in search_date:
+                search_date.append(e['Date'])
+        dates = sorted(search_date)
+        return dates
 
     def print_entry_dates(dates):
-        pass
+        print("---------------------------- Dates ----------------------------")
+        for d in dates:
+            print('\n', d)
 
     def search_by_date_range():
-        pass
+        Menu_Logger.clear()
+        entries = Previous_Work_Logger.get_entries()
+        entry_dates = Date.get_dates(entries)
+        searched_entries = []
+        searched_dates = []
+
+        while True:
+            Menu_Logger.clear()
+            Date.print_entry_dates(entry_dates)
+            print("---------------------------- a) To return ----------------------------")
+            ranged = input('Choose a date like this (dd-mm-yyyy to dd-mm-yyyy):  ')
+            if not ranged:
+                input("Enter a date range... Press enter to continue...")
+                continue
+
+            if ranged.lower() == 'a':
+                Previous_Work_Logger.previous_entries()
+                break
+
+            if not re.match(r'[0-9]{2}-[0-9]{2}-[0-9]{4}\s?to\s?[0-9]{2}-[0-9]{2}-[0-9]{4}$', ranged):
+                input("Invalid date range... Press enter to continue... ")
+                continue
+            else:
+                ranged = [date.strip() for d in ranged.split("to")]
+                if ranged[0] not in entry_dates or ranged[-1] not in entry_dates:
+                    input("Sorry that input has failed as a correct range... Please enter the date again... Press enter to continue...")
+                    continue
+                    
+                for entry in entry_dates:
+                    if entry >= ranged[0] and entry <= ranged[-1]:
+                        searched_dates.append(entry)
+                
+                for e in entries:
+                    if e['Date'] in searched_dates:
+                        searched_entries.append(entry)
+                
+                Display_Work_Log.results(searched_entries)
+                break

@@ -69,4 +69,4 @@ def edit_entry(task, time_spent, date, comments):
                 continue
         index += 1
 
-Confirm_work_log.show_all_entries(task, time_spent, date, comments)
+Confirm_work_log.show_entries(task, time_spent, date, comments)

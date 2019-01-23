@@ -134,4 +134,29 @@ class Date:
                 break
     
     def search_text():
-        pass
+        entries = Previous_Work_Logger.get_entries()
+        while True:
+            Menu_Logger.clear()
+            print("---------------------------- Search By Text Or Regular Expressions ----------------------------")
+            print("---------------------------- a) To return ----------------------------")
+            searched_entries = []
+            searched_input = input("Enter your text expression:  ")
+            if not searched_input:
+                input("You didn't enter anything... Press enter to continue...")
+                continue
+            if searched_input.lower() == 'a':
+                Previous_Work_Logger.previous_entries()
+                break
+            else:
+                searched = r'' + searched_input
+                for e in entries:
+                    if re.search(searched, e['Work Task']) or re.search(searched, e['Comments']):
+                        if e not in searched_entries:
+                            searched_entries.append(e)
+
+                if not searched_entries:
+                    input("Sorry there were no results by your search... Press enter to try again...")
+                    continue
+                else:
+                    Display_Work_Log.results(searched_entries)
+                    break

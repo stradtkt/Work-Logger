@@ -87,7 +87,7 @@ class Date:
                 if ranged[0] not in entry_dates or ranged[-1] not in entry_dates:
                     input("Sorry that input has failed as a correct range... Please enter the date again... Press enter to continue...")
                     continue
-                    
+
                 for entry in entry_dates:
                     if entry >= ranged[0] and entry <= ranged[-1]:
                         searched_dates.append(entry)
@@ -98,3 +98,40 @@ class Date:
                 
                 Display_Work_Log.results(searched_entries)
                 break
+    
+
+    def search_time():
+        Menu_Logger.clear()
+        entries = Previous_Work_Logger.get_entries()
+        new_time = []
+        searched = []
+        for e in entries:
+            time_spent = e['Time Spent']
+            time_spent = int(time_spent)
+            time_spent = datetime.timedelta(minutes=time_spent)
+            time_spent = str(time_spent)
+            time_spent = time_spent[:-3]
+            if time_spent not in new_time:
+                new_time.append(time_spent)
+        
+        while True:
+            Menu_Logger.clear()
+            print("---------------------------- Current Times ----------------------------")
+            for new in new_time:
+                print("---------------------------- "+new+" ----------------------------")
+                sleep(1)
+            
+            search_time = Add_Work_Logger.time_spent()
+            search_time = str(search_time)
+            for e in entries:
+                if e['Time Spent'] == search_time:
+                    searched.append(e)
+            if not searched:
+                input("Sorry, no task available... Please press enter to continue...")
+                continue
+            else:
+                Display_Work_Log.results(searched)
+                break
+    
+    def search_text():
+        pass

@@ -4,18 +4,18 @@ import datetime
 import Add_Work_Logger
 import Previous_Work_Logger
 from time import gmtime, strftime, sleep
-
+from collections import OrderedDict
 
 def menu():
     clear()
-    display_menu()
+    menu_loop()
 
 def start():
     clear()
     user(name())
     show_time()
     clear()
-    display_menu()
+    menu_loop()
 
 def name():
     name = input("Enter full name please:  ")
@@ -36,42 +36,29 @@ def show_time():
     print("Current Time:", the_time)
     sleep(3)
 
-def display_menu():
-    ''' Menu for the Application '''
-    while True:
-        print(''' 
-        
-        Menu
-        a) Add New Entry
-        b) Lookup Previous Entries
-        c) Quit
-        
-        ''')
-        choice = input("\n\nWhat would you like to do?  ").strip()
-        if choice.lower() in "abc":
-            if choice.lower() == 'a':
-                Add_Work_Logger.add_work_log()
-                break
-            elif choice.lower() == 'b':
-                Previous_Work_Logger.previous_entries()
-                break
-            elif choice.lower() == 'c':
-                input("Thank you come again... Press enter to leave...")
-                clear()
-                sys.exit()
-                break
-        else:
-            input("That is an invalid option... Please choose from the 3 choices a, b or c... Press enter to continue...")
-            display_menu()
-            break
+def menu_loop():
+    """Show the menu"""
+    choice = None
+    while choice != 'q':
+        clear()
+        print("Enter q to quit")
+        for key, value in menu.items():
+            print('{}) {}'.format(key, value.__doc__))
+        choice = input("Action: ").lower().strip()
 
+        if choice in menu:
+            clear()
+            menu[choice]()
+
+menu = OrderedDict([
+    ('a', Add_Work_Logger.add_work_log()),
+    ('b', Previous_Work_Logger.previous_entries()),
+    ('q', sys.exit()),
+])
 
 def clear():
-    ''' Exit the system '''
-    try:
-        os.system('cls')
-    except:
-        os.system('clear')
+    ''' Clear the page '''
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 
 if __name__ == '__main__':
